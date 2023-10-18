@@ -1,6 +1,7 @@
 package de.neuefische.cgnjava233webclient.rickandmortyapi;
 
 import de.neuefische.cgnjava233webclient.character.Character;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -9,9 +10,12 @@ import java.util.Objects;
 
 @Service
 public class RickAndMortyCharacterService {
-	private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
 
-	private final WebClient webClient = WebClient.builder().baseUrl(BASE_URL).build();
+	private final WebClient webClient;
+
+	public RickAndMortyCharacterService(@Value("${rickandmorty.characters.baseUrl}") String baseUrl){
+		this.webClient = WebClient.builder().baseUrl(baseUrl).build();
+	}
 
 	public List<Character> fetchAllCharacters(int page) {
 		if (page < 1) {
